@@ -1,0 +1,319 @@
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>MathJ</title>
+    
+    <link rel="manifest" href="manifest.json"> <!-- uselesss -->
+    
+    <link rel="alternate" media="handheld" href="notsupported.htm">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+    
+<style>
+/* if */
+input[type=button], input[type=submit], input[type=reset] {
+  background-color: #ffffff00;
+  color: #fdd6ff;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 410px 92px;
+  cursor: pointer;
+  border-color: #fdd6ff;
+}
+
+/* W3School */
+body {
+ background-color: #000000;
+ background-attachment: fixed;
+ overflow: hidden
+ background-position: center;
+ height: 500px;
+ background-repeat: no-repeat;
+ background-size: cover;
+}
+
+a {
+  color: black;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+  height:100%;
+}
+
+.loader-wrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color:#000000;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  border: 4px solid #fdd6ff;
+  animation: loader 2s infinite ease;
+}
+
+.loader-inner {
+  vertical-align: top;
+  display: inline-block;
+  width: 100%;
+  background-color: #000000;
+  animation: loader-inner 2s infinite ease-in;
+}
+
+@keyframes loader {
+  0% { transform: rotate(0deg);}
+  25% { transform: rotate(180deg);}
+  50% { transform: rotate(180deg);}
+  75% { transform: rotate(360deg);}
+  100% { transform: rotate(360deg);}
+}
+
+@keyframes loader-inner {
+  0% { height: 0%;}
+  25% { height: 0%;}
+  50% { height: 100%;}
+  75% { height: 100%;}
+  100% { height: 0%;}
+}
+
+.gridlines {
+    display: none;
+    position:absolute;
+    background:#fdd6ff;
+}
+.drag-item, .outside-drag-item {
+    position:absolute;
+    border-color:#8542f5;
+    width:25px;
+    height:25px;
+    cursor:move;
+    border-style: dashed;
+}
+
+.drag-itemspecial1, .outside-drag-item {
+    position:absolute;
+    border-color: #fdd6ff;
+    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAY9JREFUeNrE180rRFEYx/FzRxZedyPvWdhM2XjLQlmLSBZKNiwsiWQhf4DlJBtlK5spoSilSKyUjYyFkoW8NStRGmau71PPrVlYMNM896lPM7dm7u90zznPmfEySf/DOTeOPZdHRWIur4qgDDXOuCTYQ1MYwVIVYQT7GAwjOIWqMIKP8YlW6+AEvjFqHXyBKwxZB7/iFnVotgxO4wVRdFgFe7RMp03kUue626plOt3L26i3WmRBy5Ra1ce+YNkypd6wiRaMWMyxp49aqhLXeEZPsefYz7l+xwpKMWf1qINaxxMWMWkZLDWNLJZ0zs2CHzGlc56wDJY60r1dgjXLYKkZnKMXG6i1Cs4NH9Czu8sqOAiXBVeNXcxaBUsdYEIXnmyzQ/QVejr9t+IY0/db0ufpYA8WwVKNWMawXssOiDOAu2IHB9WPebTp9T32ccYgTn/7QvbGeQUHB4cEN2vnZQfl2nhSeuKdIKkDkt6QkZ9Zfw32dCEG/7UCEb1RWkVVTBdeJxp0IL5+Rg6irx8BBgBdYGNH5qmSsQAAAABJRU5ErkJggg==");
+    width:25px;
+    height:25px;
+    cursor:move;
+    border-style: dashed;
+}
+
+.drag-itemspecial2, .outside-drag-item {
+    position:absolute;
+    border-color: #fdd6ff;
+    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAZ1JREFUeNrE1k0oBGEcx/FnHpsiOXnJy0k5bHGQ5KBky0EODooTuTqQnByctUnacNwDJ0cprZODxE1OrIskhHDykqK1vk/+W3Ow26yZefZfn2am3Z3fPM8+L+Nk0lnloRxoUeFirjP4FLUiil50oglVyMp33vDleAzOWzr6e/w+Vx0ctlEpQc94wT7SuMKePGiD72BqALNok2sTkMIhD3Xw1w94SCfiI7AZ8xiS6y0kCLv00EvZ/wYnMCrnm1jhZrfF3KDY4D4soQynWMjXnUEGDyIp54tY9TMwvAavYVhG6TiO/Y5I7TG0B7uIBRHqpcW50CNMqwCrUIv7pXszQYcWCm7EuixvIyqEyheclM/ishJZCZ40a6nM1w0VUpm12pGdQ8nifoYHdBezSfht8ZyM9LgKudzB1RiT/3TbRnCum2dQjmVlobTrDcPM2TvZ3kKviOw0U2jBhLJUWrq3Hk84sRlch1bc49pmcBfasaMslpa1OGJrULkHV0zedy9st7gGr8pyaZnDqVIEm3ovRbBZMm9KEfyBR9vBPwIMAAGFV+1KwaM0AAAAAElFTkSuQmCC");
+    width:25px;
+    height:25px;
+    cursor:move;
+    border-style: dashed;
+}
+
+.outside2x2-drag-item {
+    position:absolute;
+    border-color:#34a853;
+    width:55px;
+    height:55px;
+    cursor:move;
+    border-style: dashed;
+}
+
+.outside2x2special-drag-item {
+    position:absolute;
+    border-color: #fdd6ff;
+    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAtVJREFUeNrsm79LHEEUx9dFgoWIZYogQSREI5JCJViIiAQ0QgoJqKQ5QlotLKysQggxoDH+BXKohcaIaSysgoiEq0QSEMUjWAiJjYgcYi55j7xJXhb3dpWb25k3DnyZ2bndOz589735sXtlP7/88mwufn30Ofmv3hRUQ6BD33OjfKe62hXge1SfuwJc+TcEPMfKNbDQcuYMMAxJbVC10mGFCw5jwrpF7U8uAOdZe9YFYMX4A5RzAThF9TZMQ+dciWEs38RnacrQjTyWpTt8A3Sbj8XSge+z9oILwN0sfk9FA1P81tHhGmToDekOY3aupfa+C3PpAdZeFQ0Mt3MzVJ10+NmF5SHGbw2130D8ZsQCk7t9bLJxIN3hKlA7tZfA3U2xwORuinW9D1s6SXL3KUtWu9KBubv/JStxwHQ7tzN3s4V2AyTADocNRRIdrgjEbjbsRF+Iuy+iYleSwwjcQe3FQu5iKbP8+TDCfvD+7Tu3FHLXdodVolKw43Eu8i2GvRtIVAtR7toMjIv7NDt+HQfWVmB0d4wdP/Foz1kisIpbtbhfxqwc113bgBH2DotbXPa9vAysTcAqSc3yuAVlLvtFvkWw6UDcHlzly3xLYbNXcdd04KLDmgysBdZUYIR9oAMWS7mBsK9AXTpgTQJG0GrQqE5YU4ARtgE0w/rWQdPFhjUBGGFHQP2sb4V2MDI6frA8QdBWgq1l/fjEb1cXbBLACFpFq50O1o8Pqyd13MJJASvQZ6DBwGcToHndoKUCbqbF+vMLQJdoAZAvFaxO4EKgm5SBd0oJqgNYQeKLYI8D42nioMUCVpBNoEeghxecg6BTurOvLmAFiNelaHbUE3LuW9BH0LEJoFHACsxncOolzd6Qa84oEeEbb2pTzRhQDoxTupugXKC/J8b170BHoC3vz/vI66Zvn+CjlqhnLTlKNNugE9AegeFwcp60i3H+isfLbwEGAJlhqkcMgWp8AAAAAElFTkSuQmCC");
+    width:55px;
+    height:55px;
+    cursor:move;
+    border-style: dashed;
+}
+
+.outside2x2block-drag-item {
+    position:absolute;
+    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABEtJREFUeNrc2nFEXVEcB/DX2RMxYkRExCPGGCPGKD1lMxbZmKWU0izLRjx7lj2eZZFlT9k0TSliTNOUEo83jRERYxr9G2OMGI9s7Jw5d47XPef3O+f+7tttl+8/vdt75/Puu+f87u/eir29nzG5NfBs8dTxjPKMxY5vTTybPKd5+ngWffZp5Cnw1PKM8Ez67HNW7lOD3GeI54XPPud58jxneAZ4Xvns08azwnOKp4OFgM1HFcuzIcAJBZshwNYRYocpseKPTL65h80SYFOE2GkNdtMC2+lhPTAWO4DETgCQFAG2xgK7pr7IJBSDnSfCThBgb7tgxVahzNJhYb1JjBL70gXrHeGg2DQR9n7IWPHakzgBdjwANq9gc47YViR2jqeZ+WCry4itNWDPKdghA3ZVgm4A2G6efeaD7SPCpgNi80DhUYp9B2C3xS+AhYgdjxi2neeQIbAJBTuqgTRGGLvjYb1ZGsIWgBpbvVjAYEfKjE16WA9cbuwkgB1GYG8asLM6rAeOGnYagX1rwPbqsLrCI1FyQeGKxV4qQthmKqwYCwOwWQBrmsRsmgAm7Loltl2DFWNajgfEQkc/9Q+w3w2/tl/MEpu3xLrWz2FghS3HLLF1xNgcgO3SYGMO2D+nFos49o0GOyexuzZYteORPaHYpA1W7XhkgH/CLk+ul4GU2ISpv6breJRioaMfpPC4JOt5KmzB1IVhwDf0X2HFFncsPCixlXLpCR3Lt2ss4thZxGyMxQ7yTLGIY/sV7DcAmwawMzxF18IDulhIlQHbUIIdB7Civu5SC4+w12Jq7JYlVpz/O2rhkYkQ9hMBtr8UCxUeCULsusR2IbFJAuxsKdZUeNh2PCBslcS+JsLqxmTEUnY8gmBnyoX1A9s2AXQ/KxvsIAJboMCKis618KDEfkZg6y2w7RqsGM9CnLjwcMG2EGO3NVixStSzkLA9hNiMAdtrgRXj++hSeGCwS5oBPnfAZg3YOQusaNz3UBQeFy2wdwBsPTF2XWLX5K2ZI0aA3bTEJg3YLWJss8SKG+VHQQsPV+xXIuwVcU7aYIMUHiq276RgXQuPUuwiETYLYGeDYkvBYWC/WGAzAPYHgF2FsMLGQsBOKdgWA7ZAjG0FsOK27Eo8BOxdJLaBGLthwHqtpyKm8FDX2XJjixbYDgPWu+uRgwoPD2t6uNQFO4bEthuwK5bYvzfTsNh5BDaJxI5q3qvbAttmizUVHq7YA7+ZUc7GGOxcmFhd4YHFPosw1rt5d6xdzAJg70UYq+2zxX2wpgfVVOw+EjuOxJpm42UKrHqEmxywLUhsGon9YMBeRq6ztcD9pd54DPdwKTX2liO2iOiz6bAPRfOBEWMLSOwCIRbqoHrYxzH5NC2EfWqBTRBgK4mxDyRWjLuTAdhueQXy3oCtkl/KoSxidNgL8ovbNWDF9kguKUsGbLX8zAN5zuqwV3muy88S49//LcAAQTd/4LYvp3UAAAAASUVORK5CYII=");
+    width:59px;
+    height:59px;
+    cursor:move;
+}
+
+.outside3x3-drag-item {
+    position:absolute;
+    border-color:#fabc05;
+    width:85px;
+    height:85px;
+    cursor:move;
+    border-style: dashed;
+}
+
+.outside3x3special-drag-item {
+    position:absolute;
+    border-color: #fdd6ff;
+    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABKBJREFUeNrsnVlIVHEUxq/Toq1WJma2EBUkVJQlVPTQQtH60Eq2QBsVJREFPViYVBRFFCG0LyItD0G0EUH00kNCtBBFtpC0EEF7Ei2mTt9pzrWbbRr33Ebn++DH/zoz6vCbw7n3/u8ycRW3w2Hn7/kE7oJz4AK4D16Dj6ASVIA4UJO/Va8SSq/Z6+Ig+tMfno/3LIvEMlCqvAFPwT0d34MP4BV4Bkr0QwiBBt7/qX8r/ItleX25fnBh/TlcH0Q3BNPAid88PwK08fw8FQwETUFX0FfFlKmckMqRSh8EHjpMVUUnaGuobXqBdro8FEwG3T3PS2W/1VZzE5wET2K5dfj5f6XSe4I5oL/iFS+iL4PN4AFF+5fWIAWsAsNBqkf6JXAMXASPKNrfSF/PA2P1Q3Cl3wD7wFGK9j+LwHgwplpr2VqXqrwuiK56r2AJ2ACa62MvwGGV/qQ+iA5FwXuVzcF80AL01p2iZLAMXAfbQVqdX2lG2fuRzcDRHuFJYKn28Py6LDwUpe/LK/y8Cs9W4Yso2kb4yGrC14MiMIWi7YRP1/mXAWAn2A06U7T/OaorzRVa3QvAVTCLom0im33dwFkVvg2cqjbXQtE+5YHuYS50IrOQ47V3j6Rom+wB7cFxre4joJCibSIHHCaBtSpbduvlgMRgirbJGq3uJtqvpcqXU7RNnqnsg7ornwMKKNom78BcsEVbyThwACT8rzcUDbN31unkfJ9ylXEiuOZbpabHdkV78xh00OXOur2dwdZhk6cqWSpZZgDPBC07VkS7ld0P7Hcixy7PBik7lkS7ma+yU4Ks7FgU7ZWdGpTsWBVdXbb5CjKWRXtlp6nsPhRtK/u8Z2skmaLtMlNHkb2Nou3y3LNTM8oxmBuh6B93akS2OzeyiaJtZfdT2TMcH+ezKfrnyG76Du3XMp/dmKLtIucCftAtkEMUbRt35TgM5FK0XeRiqBzt13IaWn+KtstGJ3KUPVWXKdowC7W65Qq0lRRt36+lhcgR9QyKtotsgchR9ZR/XTFSdM0jk08vdScmi6LtIpeAzNUWso6ibXMa3AGtartipOjaJ1OrWkT3pmi7yF0cClX26pr+UiycqWQRuepX7lciF6EOCaU7t1jRdrvnblXnsqKjqKpZ0QFVNSs6oKpmRftX1Xms6OCquh2qupwVbRCIlao+qFW9mK3DNgU6ZlO0bVXLHXPk/Os2lcW/nq+maP+yyfl+8g1FG+awjrNR1Y0p2q59yCV3MoXaBUygaNvs0jGLom2zV8c+aB8JFG3XPuQgrtwtRy61G0vRtnFvYTHHfQDVHaJo/5OvY6rnsTiK9r99fNbFjt6dF4q2iZyvJ6f8umekhinaJiU6zmNF22arjkmsaNs+/cWJnK/XA326CyvaNie1ouXSjHiKtkuRp300o2jbLQ9JImhL0XZJ1FFuDZdE0XYrRLnsWS4QbSSyKdq+T8vXV7WkaNu01i27NIq2zXYVnUHRtrmiojMp2jZym3z5+sBOFB1MmlO07SbeQydyWwoeYQkgpY7DSaVACpuig7bNUHR9SDlFB5PXFG2cyuJvX8QjX3jsfBVgAH/uD29//4AqAAAAAElFTkSuQmCC");
+    width:85px;
+    height:85px;
+    cursor:move;
+    border-style: dashed;
+}
+
+.outside4x4-drag-item {
+    position:absolute;
+    border-color: #ea4235;
+    width:115px;
+    height:115px;
+    cursor:move;
+    border-style: dashed;
+}
+
+.outside5x5-drag-item {
+    position:absolute;
+    border-color: #fdd6ff;
+    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAYAAAA8AXHiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAB/tJREFUeNrsnWuIVWUUhr+ZDE3FJEeRGkRMTK0fZZGXrlpamklkmFqThFaYlISYhUR0ERGpCH/0I4rKMqOUIrMLYqNoOWqRFSKDyVARmqZlYVleWou9Nmd7OOqcs9cZz9nzvPCyv7Mdb995WGvt77Zrjm4/HhAyDRbXiruJLxHXibuIO4vPE58vvrEVf86OGsBqV5opHpcHUiwFp7vT37MZsLKroeJzxXPE9XavtwHUGm0Sby1wf6945Sl+X1fxEcDKjsaK+4rvsWvvVvyev8XfWfuw+HnxQfFu8b/inaf7A2oHFb4PWNWrMWL9Wifate4UP/uD+BdrKyyvi/doZGkNPICVbY0SXy6+STzE6qGak/xsi3iX+B3xNvFvaQECrGzpOvOD4p72xJYv/QJ/Fm8XrxJvETe11T8QsKpHI+zJbbq4VwGYjlsNpACtE29sS5AAq/qe4IaFaIxoXAGYjonXiD83N1XKPxywKhemUVY3dcz79aMGUaNB1VSJ/wnAqiygHhXfKj67QJpbK14v/rRSYQKsypFOhfQTzxJPLgDT7/YE966BVTUCrMoD6kCIxpM+Fn9Wrf9BwDozQOnc3NTE/f3iF8XLQpnGlQAru0DpU93IrAMFWG0H1Hjx4yGap8s8UIBVfqAmiOda6oulQwSLxc1ZBQqwygfUbSFakpIEaq0B9W3ITfoGwEKtAUpT3dL2DhRg+elSS3lTAQqwPFRvaU+L8HgOTwc07xJ/016BAqz0ae+tvCe9p0M0sLmLLgKsYqWbDJ4UT0rc09HxhfbEhwCrKPUR3x5O3ICgaW9Ke66jACt92tMU1z9xf774TfGPdBFglQLVVHu6i7Va/EKIlvsSpQCraGl0WmTpL057DeKvAQqwSo1SCtO8RC31vng2aQ+wSlVfe9pblLg3z2opohRglQzVhyE68EK1L0S7YbYCFWClSX1PhGhLVVygPxCiPXkIsIqWThbrsuAFiXs6TrWcKAVYaaBaEaIJZFU8et4MVIBVauqbYFEqPrbnPXvqAyjASgXVS4l7d4o3AFXbgVWbcah0vdRVQNX2ylLE0qEEneu71j7rtvRpAEUqTFuk6y7iIYlI1QBUpMK0kSoJ1WtARSpMW09dHaK9fPFwgi4XbgQqUmEaqHTH8cuJe7oYbz1QARZQAVbFQqUw6Uku+4EKsDyhmgJQgJUWqpvFrySg0kKdlQmABVSABVQo42DpvN8H1t4hHg1UgJVWunn0o5BbRqzvjFnJV1kdYNVWMFQrElBp+tvE11g9qsSI1TdEc39XJKBqZFiBVJi2WNfTXa63z7qD5hOgIhWmhWpCAiqNUmuAilToAVVy5ec0ngCJWB7DCkBFxHLVAPFXIXpJtcI0HKiIWB4pcIlBpZoDVBkB7gxDpdvex9hnXf6yga+EVJhWuptmnbV1h/J9gSOEMpMKzxRYenisvp9PR9Z/FV/GsAI1lkcKXBxy0zWzgIoaywMqPfRsnH3WsxS+4Gugxkorfbn2l9ZeZdGKuooaK5U09enk8sAQHSJ7MSmQGssjBT5jUKnuBSpqLA+o7g7Ri45U+gatzXQ9NVZajRBvtDbzgKRCt2j1SOLzU0BFKvSQrlq4w9p6eMdOupxU6BGtdNVCb1IgqdATqhkGVbAnQqAiFaZWvdVTKn2VSDNdTSr0iFb6Sjadujko1mDJmBWpMLXGh9wrbxcBFRHLK1o1WSrkgFkilhtUD4Xc+/8WABXFuxdYj1n71RAd4oFIhamhei5Eb9k6ZAU7y2FIhS4F+2RrLwQq5BGxNFrp4j09IaYxRId4UFsRsVzSYJ9EtAIqlBoshWqutTVafU+XIo9UqGdYbbH22BAdOYRIhakilkarOdbWJ8EWuhl5gFWf9yTIuBVKDVZ+tFpOVyIPsDRaTUpEK1aGotRgJdexE62QG1j98morohVyAetKu/5FtEJeYOkI+2yiFfIGa3zITd800n3IAywt2mdZW89fb6H7kAdYGqkGW1sPTmOyGbmAFQ+Ibg9MNiMnsPqH6DBa1dtEK+QFlqbAXtbmyGzkBtYUuzYHdjUjJ7DqQm5ecClpEHmBNch+TlcELqPLkAdYHcUzra3vY95Fl6HW6HRLky8KuQV8t4hX02XohMhU4tLkUXb9I3AgLXJKhZoGG6ytL1HaR3chD7B0Cme4td+gq5AXWPF7BHeH3HHaCKUGKz7w/1nxAboKeYDVTXxDImIhVJRONtzQM0QvqIwh+5OuQgUjU5HDDcPsug+okGcqjCedG+gi5AWWpr6J1t5PFyGvGqtHyA2GdhIfppuQR401kqdB5J0KdRpntLVnEK2QVyrsmngKHBqYeEYlpsJ8sC4Mud3N1FfIrcZ60K4tdBnyqrG0vhpg7YeJVsgLrLNCdDaDag9dg7yKd41Y/1BfIe8aqwfdhMqRCuO9g9voFuQJ1n92nU8aRJ5gHbXrOXQL8gJriHiJtY/RLcgLrO7iDtZeQ7cgL7COJO5RXyE3sC5I3KuhW5AXWHV2vT9Ep8og5AJWXLAfIBUiT7A62bUrXYI8wbrGrpwvilykk9AarX6yOovJZ1RcZDrFJPTARPFeS1chr1TYiW5A5QBrhLV1kJShBuQGVvwkOD3kFvohlBqsnnQDKgdYHegGVA6wOtMNiIiFqgYshMoC1mRrE7mQm3RKJx670vcR7qVLUFGRadDpwdJNFIxjIXewuogP0VXIGyxWNiAiFqLGQu0QrP8FGAAzQFQJYfy+yAAAAABJRU5ErkJggg==");
+    width:145px;
+    height:145px;
+    cursor:move;
+    border-style: dashed;
+}
+
+.drop-target {
+    position:absolute;
+    background-color: rgb(0, 0, 0);
+    left:100px;
+    top:100px;
+    width:300px;
+    height:300px;
+}
+</style>
+
+</head>
+
+<body>
+	
+  <div class="drop-target">
+    <div class="drag-item" style="left:620px;top:280px;"></div>
+    <div class="drag-item" style="left:610px;top:200px;"></div>
+    <div class="drag-itemspecial1" style="left:680px;top:230px;"></div>
+    <div class="drag-itemspecial2" style="left:660px;top:200px;"></div>
+    <div class="drag-item" style="left:620px;top:220px;"></div>
+    <div class="drag-item" style="left:650px;top:250px;"></div>
+    <div class="drag-item" style="left:670px;top:270px;"></div>
+    <div class="drag-item" style="left:690px;top:290px;"></div>
+  </div>
+</div>
+	
+<div class="outside2x2block-drag-item" style="left:341px;top:161px;"><font color="white">$$0.5$$</font></div>
+<div class="outside2x2special-drag-item" style="left:800px;top:100px;"><font color="white">$$0.5$$</font></div>
+<div class="outside2x2-drag-item" style="left:820px;top:130px;"><font color="white">$$0.5$$</font></div>
+<div class="outside2x2-drag-item" style="left:800px;top:160px;"><font color="white">$$0.5$$</font></div>
+<div class="outside2x2-drag-item" style="left:820px;top:190px;"><font color="white">$$0.5$$</font></div>
+<div class="outside2x2-drag-item" style="left:800px;top:220px;"><font color="white">$$0.5$$</font></div>
+<div class="outside2x2-drag-item" style="left:820px;top:250px;"><font color="white">$$0.5$$</font></div>
+<div class="outside3x3-drag-item" style="left:700px;top:80px;"><font color="white">$$0.33$$</font></div>
+<div class="outside3x3-drag-item" style="left:600px;top:80px;"><font color="white">$$0.33$$</font></div>
+<div class="outside3x3special-drag-item" style="left:650px;top:100px;"><font color="white">$$0.33$$</font></div>
+<div class="outside4x4-drag-item" style="left:500px;top:100px;"><font color="white">$$0.25$$</font></div>
+<div class="outside5x5-drag-item" style="left:500px;top:300px;"><font color="white">$$0.2$$</font></div>
+	
+<div class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+</div>
+	
+<script>
+  $('body').css({'overflow':'hidden'});
+  $(document).bind('scroll',function () { 
+  window.scrollTo(0,0); 
+  });
+</script>
+
+<script>
+function reloadPage(){
+location.reload();
+}
+</script>
+
+<script>
+    $(window).on("load",function(){
+    $(".loader-wrapper").fadeOut("slow");
+    });
+</script>
+	
+<script>
+/*A project some random person on internet has been thanklessly sharing his code a publicly since these puzzle build it by UI*/
+
+    $(function () {
+    $(".drag-item,.drag-itemspecial1,.drag-itemspecial2").draggable({
+        snap: '.gridlines'
+    });
+    $(".outside-drag-item,.outside2x2-drag-item,.outside3x3-drag-item,.outside4x4-drag-item,.outside5x5-drag-item,.outside3x3special-drag-item,.outside5x5-drag-item,.outside2x2special-drag-item").draggable({
+        snap: '.gridlines'
+    });
+    $(".drop-target").droppable({
+        accept: ".drag-item"
+    });
+});
+
+function createGrid(size) {
+    var i,
+    sel = $('.drop-target'),
+        height = sel.height(),
+        width = sel.width(),
+        ratioW = Math.floor(width / size),
+        ratioH = Math.floor(height / size);
+
+    for (i = 0; i <= ratioW; i++) { /// vertical grid lines
+      $('<div />').css({
+            'top': 0,
+            'left': i * size,
+            'width': 1,
+            'height': height
+      })
+        .addClass('gridlines')
+        .appendTo(sel);
+    }
+
+    for (i = 0; i <= ratioH; i++) { /// horizontal grid lines
+      $('<div />').css({
+            'top': i * size,
+            'left': 0,
+            'width': width,
+            'height': 1
+      })
+        .addClass('gridlines')
+        .appendTo(sel);
+    }
+
+    $('.gridlines').show();
+}
+
+createGrid(30);
+</script>
+	
+</body>
+	
+<input type="button" value="Reset" onclick="reloadPage()"/>
+
+</html>
