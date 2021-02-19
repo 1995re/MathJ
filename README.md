@@ -1,4 +1,4 @@
-# Introducing MathJ
+# Introducing MathJ | <img src="img/0.gif" alt="MathJ" width="20" height="20"></img>
 
 Little simulation for `MathJ`, match a puzzle until pattern [Fibonnaci](https://en.wikipedia.org/wiki/Fibonacci_number) shaped absolute.
 
